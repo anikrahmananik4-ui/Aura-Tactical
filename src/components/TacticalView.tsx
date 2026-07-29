@@ -1,5 +1,6 @@
 import React from "react";
 import { motion, AnimatePresence } from "motion/react";
+import auraLogo from "../assets/images/aura_tactical_logo_1785343630303.jpg";
 import {
   Mic,
   MicOff,
@@ -135,27 +136,40 @@ export const TacticalView: React.FC<TacticalViewProps> = ({
       <div className="relative z-10 flex flex-col min-h-screen max-w-7xl w-full mx-auto px-3 sm:px-6 py-4">
         
         {/* ================= TOP FLIGHTDECK BAR ================= */}
-        <header className="bg-[#0f172a]/90 backdrop-blur-xl border border-slate-800/90 rounded-2xl p-3.5 sm:px-5 mb-4 shadow-xl flex flex-wrap items-center justify-between gap-3">
+        <header className="bg-[#0f172a]/95 backdrop-blur-xl border border-slate-800/90 rounded-2xl p-3 sm:px-5 mb-3 sm:mb-4 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-2.5 sm:gap-3">
           
-          {/* Logo & Status Badge */}
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-gradient-to-br from-orange-500/20 to-orange-700/10 border border-orange-500/30 rounded-xl shadow-[0_0_15px_rgba(249,115,22,0.15)] flex items-center justify-center">
-              <Radio className="w-5 h-5 text-orange-400 animate-pulse" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-base sm:text-lg font-black font-display tracking-tight text-white flex items-center gap-1.5">
-                  AURA<span className="text-orange-500">TACTICAL</span>
-                  <span className="text-[10px] font-mono px-1.5 py-0.5 bg-orange-950/60 border border-orange-500/30 text-orange-400 rounded-md">v2.5</span>
-                </h1>
+          {/* Logo & Title */}
+          <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
+            <div className="flex items-center gap-2.5">
+              <img
+                src={auraLogo}
+                alt="Aura Tactical Logo"
+                className="w-10 h-10 sm:w-11 sm:h-11 object-cover rounded-xl border border-orange-500/40 shadow-[0_0_15px_rgba(249,115,22,0.25)] shrink-0"
+                referrerPolicy="no-referrer"
+              />
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <h1 className="text-base sm:text-lg font-black font-display tracking-tight text-white flex items-center gap-1.5">
+                    AURA <span className="text-orange-500">TACTICAL</span>
+                    <span className="text-[9px] font-mono px-1.5 py-0.5 bg-orange-950/80 border border-orange-500/40 text-orange-400 rounded-md">PRO</span>
+                  </h1>
+                </div>
+                <p className="text-[10px] font-mono text-slate-400 tracking-wider uppercase">
+                  {isJoined ? `FREQ: 144.825 MHz • CH: ${channel}` : "TACTICAL WALKIE TALKIE"}
+                </p>
               </div>
-              <p className="text-[10px] font-mono text-slate-400 tracking-wider uppercase">
-                {isJoined ? `FREQ: 144.825 MHz • CH: ${channel}` : "STANDBY FREQUENCY BRIDGE"}
-              </p>
+            </div>
+
+            {/* Mobile-only status indicator */}
+            <div className="flex sm:hidden items-center gap-1.5 px-2 py-1 bg-[#1e293b]/80 border border-slate-800 rounded-lg text-[10px] font-mono">
+              <span className={`w-2 h-2 rounded-full ${status === 'connected' ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`} />
+              <span className={status === 'connected' ? 'text-emerald-400 font-bold' : 'text-amber-400'}>
+                {status === 'connected' ? 'LIVE' : 'STANDBY'}
+              </span>
             </div>
           </div>
 
-          {/* Center Info Stats */}
+          {/* Center Info Stats (Tablet/Desktop) */}
           <div className="hidden md:flex items-center gap-4 bg-[#1e293b]/60 px-3.5 py-1.5 rounded-xl border border-slate-800 text-[11px] font-mono">
             <div className="flex items-center gap-2">
               <span className="relative flex h-2 w-2">
@@ -163,7 +177,7 @@ export const TacticalView: React.FC<TacticalViewProps> = ({
                 <span className={`relative inline-flex rounded-full h-2 w-2 ${status === 'connected' ? 'bg-emerald-500' : 'bg-amber-500'}`} />
               </span>
               <span className={`font-bold ${status === 'connected' ? 'text-emerald-400' : 'text-amber-400'}`}>
-                {status === 'connected' ? 'ONLINE (কানেক্টেড)' : status === 'connecting' ? 'সংযো গ হচ্ছে...' : 'STANDBY'}
+                {status === 'connected' ? 'ONLINE (কানেক্টেড)' : status === 'connecting' ? 'সংযোগ হচ্ছে...' : 'STANDBY'}
               </span>
             </div>
             <span className="text-slate-700">|</span>
@@ -178,7 +192,7 @@ export const TacticalView: React.FC<TacticalViewProps> = ({
           </div>
 
           {/* Action Header Buttons */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
             <button
               type="button"
               onClick={() => setAudioMuted(!audioMuted)}
@@ -190,7 +204,7 @@ export const TacticalView: React.FC<TacticalViewProps> = ({
               title={audioMuted ? "শব্দ আনমিউট করুন" : "শব্দ মিউট করুন"}
             >
               {audioMuted ? <VolumeX className="w-4 h-4 text-rose-400" /> : <Volume2 className="w-4 h-4 text-orange-400" />}
-              <span className="hidden sm:inline">{audioMuted ? "স্পিকার বন্ধ" : "সাউন্ড অন"}</span>
+              <span className="inline">{audioMuted ? "শব্দ বন্ধ" : "সাউন্ড অন"}</span>
             </button>
 
             {isJoined && (
@@ -200,7 +214,7 @@ export const TacticalView: React.FC<TacticalViewProps> = ({
                 className="px-3 py-2 bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 hover:text-rose-200 border border-rose-500/40 rounded-xl text-xs font-mono font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm"
               >
                 <X className="w-3.5 h-3.5" />
-                <span>ডিসকানেক্ট</span>
+                <span>লিভ রুম</span>
               </button>
             )}
           </div>
@@ -217,22 +231,30 @@ export const TacticalView: React.FC<TacticalViewProps> = ({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.98 }}
               transition={{ duration: 0.2 }}
-              className="flex-1 flex flex-col items-center justify-center my-auto py-6"
+              className="flex-1 flex flex-col items-center justify-center my-auto py-3 sm:py-6"
             >
-              <div className="w-full max-w-xl bg-[#0f172a]/80 backdrop-blur-2xl border border-slate-800/90 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+              <div className="w-full max-w-xl bg-[#0f172a]/90 backdrop-blur-2xl border border-slate-800/90 rounded-3xl p-4 sm:p-8 shadow-2xl relative overflow-hidden">
                 
                 {/* Decorative glowing gradient top border */}
                 <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-orange-500 via-amber-400 to-cyan-500" />
 
-                <div className="text-center mb-6">
-                  <div className="inline-flex p-3 bg-orange-500/10 border border-orange-500/20 rounded-2xl mb-3 text-orange-400 shadow-[0_0_20px_rgba(249,115,22,0.15)]">
-                    <Radio className="w-7 h-7" />
+                <div className="text-center mb-5 sm:mb-6">
+                  <div className="relative inline-block mb-3">
+                    <img
+                      src={auraLogo}
+                      alt="Aura Tactical Logo"
+                      className="w-28 h-28 sm:w-36 sm:h-36 mx-auto rounded-3xl border-2 border-orange-500/60 shadow-[0_0_40px_rgba(249,115,22,0.4)] object-cover"
+                      referrerPolicy="no-referrer"
+                    />
                   </div>
                   <h2 className="text-xl sm:text-2xl font-black font-display text-white tracking-tight">
-                    ট্যাকটিক্যাল ভয়েস ও মিডিয়া হাবে স্বাগতম
+                    AURA TACTICAL
                   </h2>
-                  <p className="text-xs text-slate-400 mt-1 max-w-md mx-auto leading-relaxed">
-                    রিয়েল-টাইম পুশ-টু-টক (PTT) রেডিও, এইচডি ভিডিও কল এবং ফাইল ট্রান্সফার চ্যানেলে যুক্ত হতে কলসাইন ও রুম ফ্রিকোয়েন্সি বেছে নিন।
+                  <p className="text-xs text-orange-400 font-mono font-bold uppercase tracking-widest mt-0.5">
+                    ট্যাকটিক্যাল ওয়্যাকি-টকি ও মিডিয়া সিস্টেম
+                  </p>
+                  <p className="text-xs text-slate-400 mt-1.5 max-w-md mx-auto leading-relaxed">
+                    রিয়েল-টাইম পুশ-টু-টক (PTT) রেডিও, এইচডি ভিডিও কল এবং ফাইল ট্রান্সফার চ্যানেলে যুক্ত হতে আপনার কলসাইন ও রুম কোড দিন।
                   </p>
                 </div>
 
@@ -361,128 +383,20 @@ export const TacticalView: React.FC<TacticalViewProps> = ({
               className="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 items-start"
             >
               
-              {/* ================= LEFT SIDEBAR: CHANNEL & OPERATORS ================= */}
-              <div className="lg:col-span-4 flex flex-col gap-4">
+              {/* ================= MAIN WORKSPACE (TOP ON MOBILE) ================= */}
+              <div className="lg:col-span-8 order-1 lg:order-2 flex flex-col gap-4 w-full">
                 
-                {/* Active Channel Card */}
-                <div className="bg-[#0f172a]/90 backdrop-blur-xl border border-slate-800 rounded-2xl p-4 shadow-xl">
-                  <div className="flex justify-between items-center border-b border-slate-800 pb-2.5 mb-3">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-                      <span className="text-xs font-mono font-bold text-slate-200 uppercase tracking-wider">
-                        সক্রিয় ফ্রিকোয়েন্সি
-                      </span>
-                    </div>
-                    <span className="px-2 py-0.5 bg-orange-950/60 border border-orange-500/30 text-orange-400 rounded text-[10px] font-mono font-bold">
-                      {channel}
-                    </span>
+                {/* Mobile Quick Channel Info Bar */}
+                <div className="flex lg:hidden justify-between items-center bg-[#0f172a]/95 border border-slate-800 rounded-xl p-2.5 text-xs font-mono">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="text-slate-300 font-bold">চ্যানেল: <span className="text-orange-400">{channel}</span></span>
                   </div>
-
-                  <div className="space-y-2 text-xs font-mono">
-                    <div className="flex justify-between text-slate-400">
-                      <span>আপনার আইডি:</span>
-                      <span className="text-orange-400 font-bold">@{codename}</span>
-                    </div>
-                    <div className="flex justify-between text-slate-400">
-                      <span>রুট ব্রিজ:</span>
-                      <span className="text-slate-200">{location.split(" ")[0]} ↔ {friendLocation.split(" ")[0]}</span>
-                    </div>
-                    <div className="flex justify-between text-slate-400">
-                      <span>দূরত্ব ও পিং:</span>
-                      <span className="text-emerald-400">{pathMetrics.distanceKn} km ({pathMetrics.latencyMs}ms)</span>
-                    </div>
+                  <div className="text-slate-400 text-[11px]">
+                    আইডি: <span className="text-white font-bold">@{codename}</span> • {users.length + 1} জন কানেক্টেড
                   </div>
                 </div>
 
-                {/* Active Channel Operators Roster */}
-                <div className="bg-[#0f172a]/90 backdrop-blur-xl border border-slate-800 rounded-2xl p-4 shadow-xl">
-                  <div className="flex justify-between items-center border-b border-slate-800 pb-2.5 mb-3">
-                    <div className="flex items-center gap-2 text-xs font-mono font-bold text-slate-200">
-                      <Users className="w-4 h-4 text-orange-400" />
-                      <span>উপস্থিত সদস্যসমূহ ({users.length + 1})</span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
-                    {/* Self item */}
-                    <div className="flex items-center justify-between p-2 rounded-xl bg-orange-950/20 border border-orange-500/20 text-xs font-mono">
-                      <div className="flex items-center gap-2">
-                        <div className="w-7 h-7 rounded-lg bg-orange-500/20 text-orange-400 flex items-center justify-center font-bold text-[11px]">
-                          {codename.charAt(0).toUpperCase()}
-                        </div>
-                        <div>
-                          <p className="font-bold text-slate-200">@{codename} (YOU)</p>
-                          <p className="text-[9px] text-slate-500">{isLocalSpeaking ? "TRANSMITTING" : "IDLE"}</p>
-                        </div>
-                      </div>
-                      {isLocalSpeaking && (
-                        <span className="px-1.5 py-0.5 bg-rose-500/20 text-rose-400 border border-rose-500/30 text-[9px] font-bold rounded animate-pulse">
-                          LIVE
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Remote users */}
-                    {users.map((u) => (
-                      <div key={u.id} className="flex items-center justify-between p-2 rounded-xl bg-[#1e293b]/60 border border-slate-800 text-xs font-mono">
-                        <div className="flex items-center gap-2">
-                          <div className="w-7 h-7 rounded-lg bg-slate-800 text-slate-300 flex items-center justify-center font-bold text-[11px]">
-                            {u.codename.charAt(0).toUpperCase()}
-                          </div>
-                          <div>
-                            <p className="font-bold text-slate-300">@{u.codename}</p>
-                            <p className="text-[9px] text-slate-500">{u.isSpeaking ? "TALKING..." : "LISTENING"}</p>
-                          </div>
-                        </div>
-                        {u.isSpeaking && (
-                          <span className="px-1.5 py-0.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[9px] font-bold rounded animate-pulse">
-                            SPEAKING
-                          </span>
-                        )}
-                      </div>
-                    ))}
-
-                    {users.length === 0 && (
-                      <div className="p-3 bg-[#1e293b]/30 rounded-xl text-center text-[11px] font-mono text-slate-500 italic">
-                        অন্যদের রুমে জয়েন করতে চ্যানেল কোড "{channel}" দিন।
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Quick Mic Lock / Controls Card */}
-                <div className="bg-[#0f172a]/90 backdrop-blur-xl border border-slate-800 rounded-2xl p-4 shadow-xl">
-                  <div className="text-xs font-mono font-bold text-slate-300 mb-2.5 flex items-center justify-between">
-                    <span>হ্যান্ডস-ফ্রি মাইক কন্ট্রোল</span>
-                    <span className="text-[10px] text-slate-500">HOTKEY: SPACEBAR</span>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (isHandsFree) {
-                        setIsHandsFree(false);
-                        if (isLocalSpeaking) triggerTransmissionStop();
-                      } else {
-                        setIsHandsFree(true);
-                        triggerTransmissionStart();
-                      }
-                    }}
-                    className={`w-full py-2.5 px-3 rounded-xl text-xs font-mono font-bold transition flex items-center justify-center gap-2 border cursor-pointer ${
-                      isHandsFree
-                        ? "bg-amber-500 text-slate-950 border-amber-400 font-black shadow-md shadow-amber-500/20"
-                        : "bg-[#1e293b] text-slate-300 border-slate-700 hover:border-slate-600"
-                    }`}
-                  >
-                    {isHandsFree ? <Lock className="w-4 h-4" /> : <Unlock className="w-4 h-4 text-slate-400" />}
-                    <span>{isHandsFree ? "MIC LOCKED (হ্যান্ডস-ফ্রি অন)" : "LOCK MIC (হ্যান্ডস-ফ্রি)"}</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* ================= RIGHT MAIN WORKSPACE ================= */}
-              <div className="lg:col-span-8 flex flex-col gap-4">
-                
                 {/* Tactical Navigation Sub-Tabs */}
                 <div className="bg-[#0f172a]/90 backdrop-blur-xl border border-slate-800 rounded-2xl p-1.5 flex gap-1.5 shadow-xl">
                   {[
@@ -497,7 +411,7 @@ export const TacticalView: React.FC<TacticalViewProps> = ({
                         key={tb.id}
                         type="button"
                         onClick={() => setActiveTab(tb.id as any)}
-                        className={`flex-1 py-2.5 px-3 rounded-xl flex items-center justify-center gap-2 text-xs font-mono font-bold tracking-wider transition cursor-pointer ${
+                        className={`flex-1 py-2.5 px-2 sm:px-3 rounded-xl flex items-center justify-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-mono font-bold tracking-wider transition cursor-pointer select-none ${
                           isSelected
                             ? "bg-gradient-to-r from-orange-500 to-amber-500 text-slate-950 shadow-md shadow-orange-500/20"
                             : "text-slate-400 hover:text-slate-200 hover:bg-[#1e293b]/60"
@@ -512,22 +426,22 @@ export const TacticalView: React.FC<TacticalViewProps> = ({
 
                 {/* TAB 1: WALKIE TALKIE (PTT VOICE ENGINE) */}
                 {activeTab === "radio" && (
-                  <div className="bg-[#0f172a]/90 backdrop-blur-xl border border-slate-800 rounded-2xl p-5 shadow-xl space-y-5">
+                  <div className="bg-[#0f172a]/90 backdrop-blur-xl border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xl space-y-4 sm:space-y-5">
                     
                     {/* OLED Oscilloscope Visual Display */}
-                    <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4 relative overflow-hidden shadow-inner">
+                    <div className="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 sm:p-4 relative overflow-hidden shadow-inner">
                       <div className="flex justify-between items-center text-[10px] font-mono text-slate-500 mb-2">
                         <div className="flex items-center gap-1.5">
                           <span className={`w-2 h-2 rounded-full ${isLocalSpeaking || remoteSpeakerId ? 'bg-orange-500 animate-ping' : 'bg-slate-700'}`} />
-                          <span className="uppercase text-slate-400 font-bold">
+                          <span className="uppercase text-slate-400 font-bold truncate max-w-[200px] sm:max-w-none">
                             {isLocalSpeaking ? "TRANSMITTING [TX]" : remoteSpeakerId ? `RECEIVING [RX] @${remoteSpeakerName}` : "SIGNAL FLATLINE [STANDBY]"}
                           </span>
                         </div>
-                        <span>SQUELCH AUTO-FILTER</span>
+                        <span className="hidden sm:inline">SQUELCH AUTO-FILTER</span>
                       </div>
 
                       {/* Wave Canvas SVG */}
-                      <div className="h-20 w-full flex items-center justify-center relative">
+                      <div className="h-16 sm:h-20 w-full flex items-center justify-center relative">
                         <svg className="w-full h-full" viewBox="0 0 360 48" preserveAspectRatio="none">
                           <path
                             d={getWavePath()}
@@ -549,24 +463,24 @@ export const TacticalView: React.FC<TacticalViewProps> = ({
                     </div>
 
                     {/* Giant Tactile Push-To-Talk Button */}
-                    <div className="flex flex-col items-center justify-center py-4 relative">
+                    <div className="flex flex-col items-center justify-center py-3 sm:py-5 relative">
                       {/* Animated halo pulses */}
                       <AnimatePresence>
                         {isLocalSpeaking && (
                           <>
                             <motion.div
                               initial={{ scale: 1, opacity: 0.6 }}
-                              animate={{ scale: 1.7, opacity: 0 }}
+                              animate={{ scale: 1.6, opacity: 0 }}
                               exit={{ opacity: 0 }}
                               transition={{ duration: 1, repeat: Infinity, ease: "easeOut" }}
-                              className="absolute w-44 h-44 border-2 border-rose-500 rounded-full pointer-events-none"
+                              className="absolute w-40 h-40 sm:w-44 sm:h-44 border-2 border-rose-500 rounded-full pointer-events-none"
                             />
                             <motion.div
                               initial={{ scale: 1, opacity: 0.4 }}
-                              animate={{ scale: 2.2, opacity: 0 }}
+                              animate={{ scale: 2.1, opacity: 0 }}
                               exit={{ opacity: 0 }}
                               transition={{ duration: 1.4, repeat: Infinity, ease: "easeOut" }}
-                              className="absolute w-44 h-44 border border-orange-500/40 rounded-full pointer-events-none"
+                              className="absolute w-40 h-40 sm:w-44 sm:h-44 border border-orange-500/40 rounded-full pointer-events-none"
                             />
                           </>
                         )}
@@ -582,24 +496,30 @@ export const TacticalView: React.FC<TacticalViewProps> = ({
                         onMouseLeave={() => {
                           if (!isHandsFree && isLocalSpeaking) triggerTransmissionStop();
                         }}
-                        onTouchStart={() => {
+                        onTouchStart={(e) => {
+                          e.preventDefault();
                           if (!isHandsFree) triggerTransmissionStart();
                         }}
-                        onTouchEnd={() => {
+                        onTouchEnd={(e) => {
+                          e.preventDefault();
+                          if (!isHandsFree && isLocalSpeaking) triggerTransmissionStop();
+                        }}
+                        onTouchCancel={(e) => {
+                          e.preventDefault();
                           if (!isHandsFree && isLocalSpeaking) triggerTransmissionStop();
                         }}
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.95 }}
-                        className={`relative w-44 h-44 rounded-full flex flex-col items-center justify-center cursor-pointer select-none border-4 transition-all shadow-2xl ${
+                        className={`relative w-40 h-40 sm:w-44 sm:h-44 rounded-full flex flex-col items-center justify-center cursor-pointer select-none touch-none border-4 transition-all shadow-2xl ${
                           isLocalSpeaking
                             ? "bg-gradient-to-br from-rose-600 to-rose-800 border-rose-400 shadow-rose-500/40"
                             : "bg-gradient-to-br from-orange-500 to-amber-600 border-orange-400 shadow-orange-500/30"
                         }`}
                       >
-                        <div className="p-3 bg-black/20 rounded-full mb-1">
-                          {isLocalSpeaking ? <Mic className="w-8 h-8 text-white animate-pulse" /> : <MicOff className="w-8 h-8 text-white" />}
+                        <div className="p-2.5 sm:p-3 bg-black/20 rounded-full mb-1">
+                          {isLocalSpeaking ? <Mic className="w-7 h-7 sm:w-8 sm:h-8 text-white animate-pulse" /> : <MicOff className="w-7 h-7 sm:w-8 sm:h-8 text-white" />}
                         </div>
-                        <span className="text-white font-black text-sm tracking-widest uppercase font-display">
+                        <span className="text-white font-black text-xs sm:text-sm tracking-widest uppercase font-display">
                           {isLocalSpeaking ? "কথা বলুন" : "পাকড়ান ও বলুন"}
                         </span>
                         <span className="text-[9px] font-mono text-orange-200 mt-0.5 uppercase font-bold tracking-wider opacity-90">
@@ -607,9 +527,9 @@ export const TacticalView: React.FC<TacticalViewProps> = ({
                         </span>
                       </motion.button>
 
-                      <p className="text-[11px] font-mono text-slate-400 mt-4 flex items-center gap-1.5">
-                        <Keyboard className="w-3.5 h-3.5 text-orange-400" />
-                        <span>ডেস্কটপে <strong>Spacebar</strong> চেপে ধরেও বলা যাবে</span>
+                      <p className="text-[11px] font-mono text-slate-400 mt-3 sm:mt-4 flex items-center gap-1.5 text-center px-2">
+                        <Keyboard className="w-3.5 h-3.5 text-orange-400 shrink-0" />
+                        <span>মোবাইলে টাচ চেপে ধরুন অথবা কিবোর্ডে <strong>Spacebar</strong> চাপুন</span>
                       </p>
                     </div>
                   </div>
@@ -789,6 +709,125 @@ export const TacticalView: React.FC<TacticalViewProps> = ({
                     </form>
                   </div>
                 )}
+              </div>
+
+              {/* ================= SIDEBAR: CHANNEL, OPERATORS & MIC CONTROLS (ORDER 2 ON MOBILE, ORDER 1 ON DESKTOP) ================= */}
+              <div className="lg:col-span-4 order-2 lg:order-1 flex flex-col gap-4 w-full">
+                
+                {/* Active Channel Card */}
+                <div className="bg-[#0f172a]/90 backdrop-blur-xl border border-slate-800 rounded-2xl p-4 shadow-xl">
+                  <div className="flex justify-between items-center border-b border-slate-800 pb-2.5 mb-3">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+                      <span className="text-xs font-mono font-bold text-slate-200 uppercase tracking-wider">
+                        সক্রিয় ফ্রিকোয়েন্সি
+                      </span>
+                    </div>
+                    <span className="px-2 py-0.5 bg-orange-950/60 border border-orange-500/30 text-orange-400 rounded text-[10px] font-mono font-bold">
+                      {channel}
+                    </span>
+                  </div>
+
+                  <div className="space-y-2 text-xs font-mono">
+                    <div className="flex justify-between text-slate-400">
+                      <span>আপনার আইডি:</span>
+                      <span className="text-orange-400 font-bold">@{codename}</span>
+                    </div>
+                    <div className="flex justify-between text-slate-400">
+                      <span>রুট ব্রিজ:</span>
+                      <span className="text-slate-200">{location.split(" ")[0]} ↔ {friendLocation.split(" ")[0]}</span>
+                    </div>
+                    <div className="flex justify-between text-slate-400">
+                      <span>দূরত্ব ও পিং:</span>
+                      <span className="text-emerald-400">{pathMetrics.distanceKn} km ({pathMetrics.latencyMs}ms)</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Active Channel Operators Roster */}
+                <div className="bg-[#0f172a]/90 backdrop-blur-xl border border-slate-800 rounded-2xl p-4 shadow-xl">
+                  <div className="flex justify-between items-center border-b border-slate-800 pb-2.5 mb-3">
+                    <div className="flex items-center gap-2 text-xs font-mono font-bold text-slate-200">
+                      <Users className="w-4 h-4 text-orange-400" />
+                      <span>উপস্থিত সদস্যসমূহ ({users.length + 1})</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                    {/* Self item */}
+                    <div className="flex items-center justify-between p-2 rounded-xl bg-orange-950/20 border border-orange-500/20 text-xs font-mono">
+                      <div className="flex items-center gap-2">
+                        <div className="w-7 h-7 rounded-lg bg-orange-500/20 text-orange-400 flex items-center justify-center font-bold text-[11px]">
+                          {codename.charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                          <p className="font-bold text-slate-200">@{codename} (YOU)</p>
+                          <p className="text-[9px] text-slate-500">{isLocalSpeaking ? "TRANSMITTING" : "IDLE"}</p>
+                        </div>
+                      </div>
+                      {isLocalSpeaking && (
+                        <span className="px-1.5 py-0.5 bg-rose-500/20 text-rose-400 border border-rose-500/30 text-[9px] font-bold rounded animate-pulse">
+                          LIVE
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Remote users */}
+                    {users.map((u) => (
+                      <div key={u.id} className="flex items-center justify-between p-2 rounded-xl bg-[#1e293b]/60 border border-slate-800 text-xs font-mono">
+                        <div className="flex items-center gap-2">
+                          <div className="w-7 h-7 rounded-lg bg-slate-800 text-slate-300 flex items-center justify-center font-bold text-[11px]">
+                            {u.codename.charAt(0).toUpperCase()}
+                          </div>
+                          <div>
+                            <p className="font-bold text-slate-300">@{u.codename}</p>
+                            <p className="text-[9px] text-slate-500">{u.isSpeaking ? "TALKING..." : "LISTENING"}</p>
+                          </div>
+                        </div>
+                        {u.isSpeaking && (
+                          <span className="px-1.5 py-0.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[9px] font-bold rounded animate-pulse">
+                            SPEAKING
+                          </span>
+                        )}
+                      </div>
+                    ))}
+
+                    {users.length === 0 && (
+                      <div className="p-3 bg-[#1e293b]/30 rounded-xl text-center text-[11px] font-mono text-slate-500 italic">
+                        অন্যদের রুমে জয়েন করতে চ্যানেল কোড "{channel}" দিন।
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Quick Mic Lock / Controls Card */}
+                <div className="bg-[#0f172a]/90 backdrop-blur-xl border border-slate-800 rounded-2xl p-4 shadow-xl">
+                  <div className="text-xs font-mono font-bold text-slate-300 mb-2.5 flex items-center justify-between">
+                    <span>হ্যান্ডস-ফ্রি মাইক কন্ট্রোল</span>
+                    <span className="text-[10px] text-slate-500">HOTKEY: SPACEBAR</span>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (isHandsFree) {
+                        setIsHandsFree(false);
+                        if (isLocalSpeaking) triggerTransmissionStop();
+                      } else {
+                        setIsHandsFree(true);
+                        triggerTransmissionStart();
+                      }
+                    }}
+                    className={`w-full py-2.5 px-3 rounded-xl text-xs font-mono font-bold transition flex items-center justify-center gap-2 border cursor-pointer ${
+                      isHandsFree
+                        ? "bg-amber-500 text-slate-950 border-amber-400 font-black shadow-md shadow-amber-500/20"
+                        : "bg-[#1e293b] text-slate-300 border-slate-700 hover:border-slate-600"
+                    }`}
+                  >
+                    {isHandsFree ? <Lock className="w-4 h-4" /> : <Unlock className="w-4 h-4 text-slate-400" />}
+                    <span>{isHandsFree ? "MIC LOCKED (হ্যান্ডস-ফ্রি অন)" : "LOCK MIC (হ্যান্ডস-ফ্রি)"}</span>
+                  </button>
+                </div>
               </div>
             </motion.div>
           )}

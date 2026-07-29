@@ -1,6 +1,6 @@
 {
-  "name": "Walkie Talkie",
-  "description": "A low-latency, real-time Walkie Talkie app allowing instant voice chats within custom channel workspaces.",
+  "name": "Aura Tactical",
+  "description": "Aura Tactical Walkie Talkie Application - Real-time PTT voice, HD video calls, and file sharing.",
   "requestFramePermissions": ["microphone", "camera"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
