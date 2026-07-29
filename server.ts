@@ -60,12 +60,18 @@ async function startServer() {
 
   // Handle WebSockets upgrading
   server.on("upgrade", (request, socket, head) => {
-    const pathname = new URL(request.url || "", `http://${request.headers.host}`).pathname;
-    if (pathname === "/ws") {
-      wss.handleUpgrade(request, socket, head, (ws) => {
-        wss.emit("connection", ws, request);
-      });
-    } else {
+    try {
+      const host = request.headers.host || "localhost";
+      const pathname = new URL(request.url || "", `http://${host}`).pathname;
+      if (pathname === "/ws" || pathname.startsWith("/ws")) {
+        wss.handleUpgrade(request, socket, head, (ws) => {
+          wss.emit("connection", ws, request);
+        });
+      } else {
+        socket.destroy();
+      }
+    } catch (err) {
+      console.error("Upgrade error:", err);
       socket.destroy();
     }
   });

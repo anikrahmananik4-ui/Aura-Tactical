@@ -88,6 +88,7 @@ export default function App() {
   const mediaStreamRef = useRef<MediaStream | null>(null);
   const scriptProcessorRef = useRef<ScriptProcessorNode | null>(null);
   const nextScheduledTimeRef = useRef<number>(0);
+  const myUserIdRef = useRef<string>("");
   const wsRef = useRef<WebSocket | null>(null);
   const pingIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -199,6 +200,14 @@ export default function App() {
     if (e) e.preventDefault();
     if (!codename.trim() || !channel.trim()) return;
 
+    if (wsRef.current) {
+      try { wsRef.current.close(); } catch (_) {}
+    }
+    if (pingIntervalRef.current) {
+      clearInterval(pingIntervalRef.current);
+      pingIntervalRef.current = null;
+    }
+
     setStatus("connecting");
     addSystemMsg("সার্ভারে সংযোগ করার চেষ্টা করা হচ্ছে...", "info");
 
@@ -224,15 +233,16 @@ export default function App() {
 
         switch (payload.type) {
           case "joined":
+            myUserIdRef.current = payload.userId;
             setMyUserId(payload.userId);
             setIsJoined(true);
-            addSystemMsg(`চ্যানেলে যুক্ত হয়েছেন: CH-${payload.channel}`, "system");
+            addSystemMsg(`চ্যানেলে যুক্ত হয়েছেন: CH-${payload.channel.toUpperCase()}`, "system");
             break;
 
           case "users":
             // Remote participant presences
             const activeUsersList = (payload.users as WalkieUser[]).filter(
-              (u) => u.id !== myUserId
+              (u) => u.id !== myUserIdRef.current
             );
             setUsers(activeUsersList);
             break;
@@ -358,6 +368,10 @@ export default function App() {
     };
 
     ws.onclose = () => {
+      if (pingIntervalRef.current) {
+        clearInterval(pingIntervalRef.current);
+        pingIntervalRef.current = null;
+      }
       setStatus("disconnected");
       setIsJoined(false);
       cleanUpLocalStreaming();
