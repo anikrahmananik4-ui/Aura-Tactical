@@ -61,18 +61,19 @@ async function startServer() {
   // Handle WebSockets upgrading
   server.on("upgrade", (request, socket, head) => {
     try {
-      const host = request.headers.host || "localhost";
-      const pathname = new URL(request.url || "", `http://${host}`).pathname;
-      if (pathname === "/ws" || pathname.startsWith("/ws")) {
+      const reqUrl = request.url || "";
+      if (reqUrl.includes("/ws") || reqUrl === "/ws") {
         wss.handleUpgrade(request, socket, head, (ws) => {
           wss.emit("connection", ws, request);
         });
       } else {
-        socket.destroy();
+        if (process.env.NODE_ENV === "production") {
+          socket.destroy();
+        }
       }
     } catch (err) {
       console.error("Upgrade error:", err);
-      socket.destroy();
+      try { socket.destroy(); } catch (_) {}
     }
   });
 

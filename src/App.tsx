@@ -162,7 +162,8 @@ export default function App() {
   const getWebSocketUrl = () => {
     const loc = window.location;
     const protocol = loc.protocol === "https:" ? "wss:" : "ws:";
-    return `${protocol}//${loc.host}/ws`;
+    const host = loc.host || "localhost:3000";
+    return `${protocol}//${host}/ws`;
   };
 
   // Keyboard controls listener (Spacebar triggers talk!)
@@ -198,7 +199,20 @@ export default function App() {
   // Connect to the unified Voice signaling Hub on selection
   const handleConnect = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (!codename.trim() || !channel.trim()) return;
+    
+    // Auto generate codename if user left it blank
+    let activeCodename = codename.trim();
+    if (!activeCodename) {
+      const callsigns = ["ALPHA-1", "DELTA-7", "SIERRA-X", "ECHO-9", "VICTOR-3", "BRAVO-2"];
+      activeCodename = callsigns[Math.floor(Math.random() * callsigns.length)];
+      setCodename(activeCodename);
+    }
+
+    let activeChannel = channel.trim().toUpperCase();
+    if (!activeChannel) {
+      activeChannel = "ROOM_01";
+      setChannel(activeChannel);
+    }
 
     if (wsRef.current) {
       try { wsRef.current.close(); } catch (_) {}
@@ -212,6 +226,7 @@ export default function App() {
     addSystemMsg("সার্ভারে সংযোগ করার চেষ্টা করা হচ্ছে...", "info");
 
     const wsUrl = getWebSocketUrl();
+    console.log("Connecting to WebSocket URL:", wsUrl);
     const ws = new WebSocket(wsUrl);
     wsRef.current = ws;
 
@@ -221,8 +236,8 @@ export default function App() {
       ws.send(
         JSON.stringify({
           type: "join",
-          codename: codename.trim(),
-          channel: channel.trim().toUpperCase()
+          codename: activeCodename,
+          channel: activeChannel
         })
       );
     };

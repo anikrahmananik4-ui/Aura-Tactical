@@ -268,10 +268,9 @@ export const TacticalView: React.FC<TacticalViewProps> = ({
                     <div className="relative">
                       <input
                         type="text"
-                        required
                         value={codename}
                         onChange={(e) => setCodename(e.target.value)}
-                        placeholder="যেমন: ALPHA-1, COM-99, KILO-7"
+                        placeholder="যেমন: ALPHA-1, COM-99, KILO-7 (ফাঁকা রাখলে অটো সিলেক্ট হবে)"
                         className="w-full py-3 px-4 bg-[#1e293b]/80 border border-slate-700/80 focus:border-orange-500 rounded-xl text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-orange-500 font-mono transition"
                       />
                       <button
@@ -294,7 +293,6 @@ export const TacticalView: React.FC<TacticalViewProps> = ({
                     </label>
                     <input
                       type="text"
-                      required
                       value={channel}
                       onChange={(e) => setChannel(e.target.value.toUpperCase())}
                       placeholder="যেমন: ROOM_01, ALPHA_SEC"
