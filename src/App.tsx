@@ -438,8 +438,12 @@ export default function App() {
         }
       };
 
+      // Route mic through zero-gain node to prevent local acoustic feedback screeching on mobile speakers
+      const silenceGain = ctx.createGain();
+      silenceGain.gain.value = 0;
       sourceNode.connect(processorNode);
-      processorNode.connect(ctx.destination);
+      processorNode.connect(silenceGain);
+      silenceGain.connect(ctx.destination);
 
       // Notify other room users that I'm active
       if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
